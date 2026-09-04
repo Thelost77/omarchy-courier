@@ -112,7 +112,7 @@ assert(manifest.id === 'io.github.thelost77.omacourier' && manifest.name === 'Om
 assert(bar.includes('text: ""') && bar.includes('Color.accent') && bar.includes('readonly property real iconVerticalOffset:') && offsetUses.length === 2, 'bar applies one tunable optical offset to both envelope layouts')
 assert(panel.includes('Color.popups.text') && panel.includes('Style.font.') && panel.includes('Style.spacing.'), 'panel follows Omarchy color, type, and spacing tokens')
 assert(panel.includes('text: "Mark all read"') && panel.includes('font.bold: !storyDelegate.modelData.read'), 'panel exposes mark all read and bold unread stories')
-assert(panel.includes('j/k move  ·  Enter read  ·  r refresh  ·  A all'), 'story list includes a compact keyboard hint')
+assert(panel.includes('j/k move  ·  Enter read  ·  A mark all  ·  r refresh'), 'story list includes a subtle keyboard hint')
 assert(articleView.includes('text: "ARTICLE"') && articleView.includes('textFormat: Text.PlainText'), 'panel has a plain-text article reader')
 assert(articleView.includes('j/k scroll  ·  h back  ·  o browser'), 'article reader includes a subtle keyboard hint')
 assert(service.includes('readonly property int refreshMinutes: 30') && service.includes('function loadArticle(id)'), 'service refreshes the feed and loads selected articles')

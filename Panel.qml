@@ -347,7 +347,7 @@ KeyboardPanel {
 
         Text {
           width: parent.width
-          text: "j/k move  ·  Enter read  ·  r refresh  ·  A all"
+          text: "j/k move  ·  Enter read  ·  A mark all  ·  r refresh"
           textFormat: Text.PlainText
           color: panel.foreground
           opacity: 0.34
