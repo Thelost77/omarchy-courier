@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -euo pipefail
+
+readonly url="https://omarchy.org/news/rss.xml"
+readonly max_bytes=$((512 * 1024))
+
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+
+curl \
+  --fail \
+  --silent \
+  --show-error \
+  --location \
+  --max-redirs 3 \
+  --proto '=https' \
+  --connect-timeout 5 \
+  --max-time 15 \
+  --max-filesize "$max_bytes" \
+  --user-agent 'io.github.thelost77.omacourier/1.0' \
+  --output "$tmp" \
+  "$url"
+
+size=$(stat -c '%s' "$tmp")
+if (( size == 0 || size > max_bytes )); then
+  printf 'Omarchy News feed has an invalid size: %s bytes\n' "$size" >&2
+  exit 1
+fi
+
+cat "$tmp"

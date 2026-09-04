@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.thelost77.omacourier",
+  "name": "OmaCourier",
+  "version": "1.0.0",
+  "author": "Wiktor Ziębka",
+  "license": "MIT",
+  "description": "A quiet inbox and reader for the official Omarchy News feed.",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "OmaCourier",
+    "description": "Unread stories from the official Omarchy News feed",
+    "category": "Info",
+    "allowMultiple": false,
+    "defaultSection": "center"
+  }
+}
