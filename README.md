@@ -6,6 +6,12 @@ OmaCourier is a quiet, keyboard-first inbox and reader for the official [Omarchy
 
 The bar shows an outline envelope and the unread count. The compact panel lists the newest stories first, marks unread titles in bold, and opens each story in a plain-text reader.
 
+## Preview
+
+![OmaCourier inbox](preview.png)
+
+![OmaCourier article reader](docs/reader.png)
+
 ## Install
 
 ```bash
