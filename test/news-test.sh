@@ -100,6 +100,25 @@ assert(article.meta === 'By DHH on September 3, 2026', 'article parser tolerates
 assert(article.body.includes('First paragraph with <code>.') && article.body.includes('• One item'), 'article parser preserves readable paragraphs and lists')
 assert(news.parseArticle(articleHtml.replace('</html>', '')) === null, 'article parser rejects truncated HTML')
 
+// Reduced from https://omarchy.org/news/2026/09/omarchy-org-redesign-launches-with-29-languages/
+const redesignedHtml = `<!DOCTYPE html><html lang="en"><body><div class="flex min-h-dvh flex-col">
+<header><h1>Omarchy</h1><p>Site navigation</p></header><div class="prose">Not the article</div>
+<div id="main"><main><header><p>News</p></header><article><header>
+<p class="font-mono text-xs text-text-muted">By<!-- --> <a href="https://dhh.dk" rel="author" class="text-text-secondary">DHH</a> <!-- -->on<!-- --> <time dateTime="2026-09-07T20:15:00+02:00">September 7, 2026</time></p>
+<h1 class="mt-2 text-3xl font-semibold tracking-tight text-text">Omarchy.org redesign launches with 29 languages</h1>
+</header><div class="prose mt-8"><p>The website for a beautiful, fun Linux distribution ought to be beautiful and fun too.</p>
+<p>So pick a theme. Poke the pixels. Computers should be fun!</p></div></article>
+<footer><p>More news</p></footer></main></div></div></body></html>`
+const redesigned = news.parseArticle(redesignedHtml)
+assert(redesigned && redesigned.title === 'Omarchy.org redesign launches with 29 languages', 'article parser reads the redesigned news page title')
+assert(redesigned.meta === 'By DHH on September 7, 2026', 'article parser reads the redesigned byline and date')
+assert(redesigned.body === 'The website for a beautiful, fun Linux distribution ought to be beautiful and fun too.\n\nSo pick a theme. Poke the pixels. Computers should be fun!', 'article parser reads the complete prose without site navigation or footer text')
+assert(news.parseArticle(redesignedHtml.replace(/<article>[\s\S]*?<\/article>/, '')) === null, 'article parser rejects non-article pages')
+assert(news.parseArticle(redesignedHtml.replace('</article>', '')) === null, 'article parser rejects an unclosed article')
+assert(news.parseArticle(redesignedHtml.replace(/<h1 class="mt-2[^>]*>[\s\S]*?<\/h1>/, '')) === null, 'article parser rejects a missing article title')
+assert(news.parseArticle(redesignedHtml.replace('class="prose mt-8"', 'class="not-prose"')) === null, 'article parser rejects a missing article body')
+assert(news.parseArticle(redesignedHtml.replace(/<div class="prose mt-8">[\s\S]*?<\/div>/, '<div class="prose mt-8"></div>')) === null, 'article parser rejects an empty article body')
+
 const bar = fs.readFileSync(path.join(root, 'BarWidget.qml'), 'utf8')
 const panel = fs.readFileSync(path.join(root, 'Panel.qml'), 'utf8')
 const articleView = fs.readFileSync(path.join(root, 'ArticleView.qml'), 'utf8')

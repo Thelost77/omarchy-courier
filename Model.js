@@ -238,9 +238,20 @@ function parseArticle(raw) {
   var html = String(raw || "")
   if (!/<html\b[^>]*>/i.test(html) || !/<\/html\s*>/i.test(html)) return null
 
+  var post = html.match(/<article\b[^>]*>([\s\S]*?)<\/article\s*>/i)
+  if (!post) return null
+  html = post[1]
+
   var prose = contentForClass(html, "div", "news-prose")
   var title = contentForClass(html, "h1", "news-post__title")
   var meta = contentForClass(html, "p", "news-meta")
+  if (prose === null) {
+    var header = html.match(/<header\b[^>]*>([\s\S]*?)<\/header\s*>/i)
+    if (!header) return null
+    prose = contentForClass(html, "div", "prose")
+    title = tagText(header[1], "h1")
+    meta = tagText(header[1], "p")
+  }
   if (prose === null || title === null) return null
 
   var body = articleText(prose)
