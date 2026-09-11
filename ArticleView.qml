@@ -20,12 +20,47 @@ Item {
   signal openBrowserRequested()
   signal retryRequested()
 
-  onArticleIdChanged: articleFlick.contentY = 0
-  onArticleChanged: articleFlick.contentY = 0
+  onArticleIdChanged: resetScroll()
+  onArticleChanged: resetScroll()
+
+  function maxContentY() {
+    return Math.max(0, articleFlick.contentHeight - articleFlick.height)
+  }
+
+  function clampContentY(y) {
+    return Math.max(0, Math.min(maxContentY(), y))
+  }
+
+  function resetScroll() {
+    scrollAnim.stop()
+    articleFlick.contentY = 0
+  }
+
+  function animateContentY(next) {
+    next = clampContentY(next)
+    articleFlick.cancelFlick()
+    if (Math.abs(next - articleFlick.contentY) < 0.5) {
+      scrollAnim.stop()
+      articleFlick.contentY = next
+      return
+    }
+    scrollAnim.stop()
+    scrollAnim.from = articleFlick.contentY
+    scrollAnim.to = next
+    scrollAnim.start()
+  }
 
   function scrollBy(direction) {
-    var next = articleFlick.contentY + direction * Style.space(48)
-    articleFlick.contentY = Math.max(0, Math.min(articleFlick.contentHeight - articleFlick.height, next))
+    var base = scrollAnim.running ? scrollAnim.to : articleFlick.contentY
+    animateContentY(base + direction * Style.space(48))
+  }
+
+  NumberAnimation {
+    id: scrollAnim
+    target: articleFlick
+    property: "contentY"
+    duration: 140
+    easing.type: Easing.OutCubic
   }
 
   Item {
@@ -94,9 +129,26 @@ Item {
     anchors.right: parent.right
     clip: true
     boundsBehavior: Flickable.StopAtBounds
+    flickableDirection: Flickable.VerticalFlick
     contentWidth: width
     contentHeight: articleColumn.implicitHeight
     ScrollBar.vertical: ScrollBar { policy: ScrollBar.AsNeeded }
+
+    WheelHandler {
+      onWheel: function(event) {
+        if (event.pixelDelta.y !== 0) {
+          scrollAnim.stop()
+          articleFlick.cancelFlick()
+          articleFlick.contentY = root.clampContentY(articleFlick.contentY - event.pixelDelta.y)
+          event.accepted = true
+          return
+        }
+        if (event.angleDelta.y === 0) return
+        var base = scrollAnim.running ? scrollAnim.to : articleFlick.contentY
+        root.animateContentY(base - event.angleDelta.y / 120 * Style.space(48))
+        event.accepted = true
+      }
+    }
 
     Column {
       id: articleColumn

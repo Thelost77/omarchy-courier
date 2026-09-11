@@ -101,6 +101,8 @@ KeyboardPanel {
           else if (dy !== 0) articleView.scrollBy(dy)
         } else if (dy !== 0) {
           panel.moveCursor(dy)
+        } else if (dx > 0) {
+          panel.openStory(panel.cursor)
         }
       }
       onActivateRequested: {
@@ -347,7 +349,7 @@ KeyboardPanel {
 
         Text {
           width: parent.width
-          text: "j/k move  ·  Enter read  ·  A mark all  ·  r refresh"
+          text: "j/k move  ·  l/Enter read  ·  A mark all  ·  r refresh"
           textFormat: Text.PlainText
           color: panel.foreground
           opacity: 0.34

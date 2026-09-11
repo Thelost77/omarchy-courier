@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "io.github.thelost77.omacourier",
   "name": "OmaCourier",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Wiktor Ziębka",
   "license": "MIT",
   "description": "A quiet inbox and reader for the official Omarchy News feed.",

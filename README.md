@@ -35,7 +35,7 @@ omarchy plugin remove io.github.thelost77.omacourier
 - Left or right click: open the news panel
 - Middle click: refresh
 - `j`/`k` or arrow keys: move through stories or scroll an article
-- `Enter`: read the selected story; from the reader, open it in the browser
+- `l` or `Enter`: read the selected story; from the reader, `Enter` opens it in the browser
 - `h`, `b`, or `Esc`: return from the reader to the story list
 - `o`: open the current article in the browser
 - `A`: mark every story read
